@@ -23,7 +23,7 @@ def mixed_pairs(size, x, y):
     for i in indexes:
         a = i[0]
         b = i[1]
-        x_.append(np.add(x[a], x[b]))
+        x_.append(np.clip(np.add(x[a], x[b]), 255), 0, 255)
         y_.append(min(y[a], y[b]) + max(y[b], y[a]) * 10)
 
     x = np.asarray(x_) / 255 / 2

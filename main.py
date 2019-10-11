@@ -16,9 +16,9 @@ def __main__():
     x_test, y_test = mixed_pairs(SIZE, x_test, y_test)
 
     model = get_model(
-        filename="1",
-        load_instead_fit=True,
-        save=False,
+        filename="2",
+        load_instead_fit=False,
+        save=True,
         epochs=5,
         x_train=x_train,
         y_train=y_train,
