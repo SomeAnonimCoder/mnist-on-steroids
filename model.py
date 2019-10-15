@@ -26,42 +26,25 @@ def load_from_file(name):
 """
 Creates a model and then train it or load weights from filename.h5
 """
+#TODO dense-dense-dense
 def get_model(load_instead_fit, save, filename=None, epochs=None, x_train=None, y_train=None):
 
     input_shape = (28,28,1)
 
     model = Sequential()
-
-    # convolutional layer, turns (28,28) to (25,25)
-    model.add(Conv2D(28, kernel_size=(3, 3), input_shape=input_shape))
-
-    #fully connected layer. RElU is max(0,x)
-    model.add(Dense(128, activation=tf.nn.relu))
-
-    # convolutional layer, turns (28,28) to (25,25)
-    model.add(Conv2D(28, kernel_size=(3, 3), input_shape=input_shape))
-
-    #for each block 2x2 take maximal value
+    model.add(Conv2D(32, kernel_size=(3, 3),
+                 activation='relu',
+                 input_shape=input_shape))
+    model.add(Conv2D(64, (3, 3), activation='relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
-
-    #transform 2d array to 1d array
+    #TODO how it works
+    model.add(Dropout(0.25))
     model.add(Flatten())
-
-    #fully connected layer. RElU is max(0,x)
-    model.add(Dense(128, activation=tf.nn.relu))
-
-    #Drupout - exclude neirons with p=0.2
-    model.add(Dropout(0.2))
-
-    # fully connected layer. RElU is max(0,x)
-    model.add(Dense(128, activation=tf.nn.relu))
-
-    # Drupout - exclude neirons with p=0.2
-    model.add(Dropout(0.2))
-
-    #fully connected layer. Softmax - probability of being maximal
-    model.add(Dense(100, activation=tf.nn.softmax))
-
+    model.add(Dense(128, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(100, activation='softmax'))
+    
+    model.summary()
 
     callbacks = [EarlyStopping(monitor='val_loss', patience=2)]
 
@@ -72,7 +55,7 @@ def get_model(load_instead_fit, save, filename=None, epochs=None, x_train=None, 
     if load_instead_fit:
         model.load_weights(filename+".h5")
     else:
-        model.fit(x_train, y_train, epochs=epochs, callbacks=callbacks)
+        model.fit(x_train[1000:], y_train[1000:],validation_data=(x_train[:1000], y_train[:1000]), epochs=epochs, callbacks=callbacks)
     if save: save_model(model, filename)
     return model
 

@@ -1,4 +1,4 @@
-
+import matplotlib.pyplot as plt
 from dataset import get_data, mixed_pairs
 from model import get_model
 from show_results import test_model
@@ -12,17 +12,20 @@ def __main__():
     x_train, y_train = mixed_pairs(SIZE, x_train, y_train)
 
     # CREATE MIXED TEST
-    SIZE = 1000
+    SIZE = 100000
     x_test, y_test = mixed_pairs(SIZE, x_test, y_test)
 
+
     model = get_model(
-        filename="2",
-        load_instead_fit=False,
+        filename="1",
+        load_instead_fit=True,
         save=True,
         epochs=5,
         x_train=x_train,
         y_train=y_train,
     )
+
+    model.summary()
 
     print(test_model(model, x_test, y_test))
 
