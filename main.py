@@ -18,7 +18,7 @@ def __main__():
 
     model = get_model(
         filename="1",
-        load_instead_fit=True,
+        load_instead_fit=False,
         save=True,
         epochs=5,
         x_train=x_train,

@@ -32,25 +32,31 @@ def get_model(load_instead_fit, save, filename=None, epochs=None, x_train=None, 
     input_shape = (28,28,1)
 
     model = Sequential()
-    model.add(Conv2D(32, kernel_size=(3, 3),
-                 activation='relu',
-                 input_shape=input_shape))
-    model.add(Conv2D(64, (3, 3), activation='relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    #TODO how it works
-    model.add(Dropout(0.25))
     model.add(Flatten())
-    model.add(Dense(128, activation='relu'))
-    model.add(Dropout(0.5))
-    model.add(Dense(100, activation='softmax'))
-    
-    model.summary()
+    model.add(Dense(28*28, activation=tf.nn.relu))
+    model.add(Dropout(0.2))
+
+    model.add(Dense(28*28, activation=tf.nn.relu))
+    model.add(Dropout(0.2))
+
+    model.add(Dense(28*28, activation=tf.nn.relu))
+    model.add(Dropout(0.2))
+
+    model.add(Dense(28*28, activation=tf.nn.relu))
+    model.add(Dropout(0.2))
+
+
+    model.add(Dense(100, activation=tf.nn.softmax))
+
+
 
     callbacks = [EarlyStopping(monitor='val_loss', patience=2)]
 
     model.compile(optimizer='adam',
                   loss='sparse_categorical_crossentropy',
                   metrics=['accuracy'])
+
+    #model.summary()
 
     if load_instead_fit:
         model.load_weights(filename+".h5")
